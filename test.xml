@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Records xmlns="http://www.javacore.ru/schemas/">
+    <Contract operation="1">
+        <General>
+            <ContractCode>4300148118</ContractCode>
+            <AgreementNumber>4300148118</AgreementNumber>
+            <FundingType id="2"/>
+            <CreditPurpose2 id="01"/>
+            <CreditObject id="03"/>
+            <ContractPhase id="4"/>
+            <ContractStatus id="27"/>
+            <StartDate>2023-01-31</StartDate>
+            <EndDate>2028-02-02</EndDate>
+            <AnnualEffectiveRate>50.99</AnnualEffectiveRate>
+            <NominalRate>28.10</NominalRate>
+            <Subjects>
+                <Subject roleId="1">
+                    <Entity>
+                        <Individual>
+                            <FirstName>
+                                <Text language="ru-RU">СВГДТ</Text>
+                            </FirstName>
+                            <SurName>
+                                <Text language="ru-RU">БЁГДЪЁЖЦК</Text>
+                            </SurName>
+                            <FathersName>
+                                <Text language="ru-RU">АМРИТ</Text>
+                            </FathersName>
+                            <Classification id="1"/>
+                            <Residency id="1"/>
+                            <DateOfBirth>1995-06-07</DateOfBirth>
+                            <Identifications>
+                                <Identification>
+                                    <Number>950227351373</Number>
+                                    <RegistrationDate>1900-01-01</RegistrationDate>
+                                </Identification>
+                                <Identification>
+                                    <Number>963531230</Number>
+                                    <RegistrationDate>2018-04-07</RegistrationDate>
+                                </Identification>
+                            </Identifications>
+                            <Addresses>
+                                <Address katoId="750000000">
+                                    <StreetName>
+                                        <Text language="ru-RU">ДПЗКА</Text>
+                                    </StreetName>
+                                </Address>
+                                <Address>
+                                    <StreetName>
+                                        <Text language="ru-RU">ЦФФЦА</Text>
+                                    </StreetName>
+                                </Address>
+                            </Addresses>
+                        </Individual>
+                    </Entity>
+                </Subject>
+            </Subjects>
+        </General>
+        <Type>
+            <Credit paymentMethod="3">
+                <CreditLimit currency="KZT">WHAT IS UT?</CreditLimit>
+                <Records>
+                    <Record accountingDate="2023-02-01">
+                        <MonthlyInstalmentAmount currency="KZT">400095.00</MonthlyInstalmentAmount>
+                        <ResidualAmount currency="KZT">0</ResidualAmount>
+                    </Record>
+                </Records>
+            </Credit>
+        </Type>
+    </Contract>
+    <Contract operation="1">
+        <General>
+            <ContractCode>4300148113</ContractCode>
+            <AgreementNumber>4300148118</AgreementNumber>
+            <FundingType id="2"/>
+            <CreditPurpose2 id="01"/>
+            <CreditObject id="03"/>
+            <ContractPhase id="4"/>
+            <ContractStatus id="27"/>
+            <StartDate>2023-01-31</StartDate>
+            <EndDate>2028-02-02</EndDate>
+            <AnnualEffectiveRate>50.99</AnnualEffectiveRate>
+            <NominalRate>28.10</NominalRate>
+            <Subjects>
+                <Subject roleId="1">
+                    <Entity>
+                        <Individual>
+                            <FirstName>
+                                <Text language="ru-RU">СВГДТ</Text>
+                            </FirstName>
+                            <SurName>
+                                <Text language="ru-RU">БЁГДЪЁЖЦК</Text>
+                            </SurName>
+                            <FathersName>
+                                <Text language="ru-RU">АМРИТ</Text>
+                            </FathersName>
+                            <Classification id="1"/>
+                            <Residency id="1"/>
+                            <DateOfBirth>1995-06-07</DateOfBirth>
+                            <Identifications>
+                                <Identification>
+                                    <Number>950227351373</Number>
+                                    <RegistrationDate>1900-01-01</RegistrationDate>
+                                </Identification>
+                                <Identification>
+                                    <Number>963531230</Number>
+                                    <RegistrationDate>2018-04-07</RegistrationDate>
+                                </Identification>
+                            </Identifications>
+                            <Addresses>
+                                <Address katoId="750000000">
+                                    <StreetName>
+                                        <Text language="ru-RU">ДПЗКА</Text>
+                                    </StreetName>
+                                </Address>
+                                <Address>
+                                    <StreetName>
+                                        <Text language="ru-RU">ЦФФЦА</Text>
+                                    </StreetName>
+                                </Address>
+                            </Addresses>
+                        </Individual>
+                    </Entity>
+                </Subject>
+            </Subjects>
+        </General>
+        <Type>
+            <Credit paymentMethod="3">
+                <CreditLimit currency="KZT">WHAT IS UT?</CreditLimit>
+                <Records>
+                    <Record accountingDate="2023-02-01">
+                        <MonthlyInstalmentAmount currency="KZT">400095.00</MonthlyInstalmentAmount>
+                        <ResidualAmount currency="KZT">0</ResidualAmount>
+                    </Record>
+                </Records>
+            </Credit>
+        </Type>
+    </Contract>
+</Records>

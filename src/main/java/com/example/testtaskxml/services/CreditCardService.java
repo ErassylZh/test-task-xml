@@ -14,6 +14,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -29,6 +31,7 @@ public class CreditCardService {
             try {
                 createXmlFile();
                 toZipFile();
+                System.out.println(encodeZipFile());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -179,6 +182,26 @@ public class CreditCardService {
         }
     }
 
+    public String encodeZipFile(){
+
+        byte[] zipBytes = readBytesFromFile(path+"\\output.zip");
+
+        // Encode the zip file contents using Base64
+        String base64Encoded = Base64.getEncoder().encodeToString(zipBytes);
+
+        return base64Encoded;
+    }
+
+    private static byte[] readBytesFromFile(String filePath) {
+        File file = new File(filePath);
+        byte[] fileBytes = new byte[(int) file.length()];
+        try (FileInputStream fis = new FileInputStream(file)) {
+            fis.read(fileBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileBytes;
+    }
     public List<CreditCardDto> getAllData(){
         String query="SELECT * FROM fcb_daily_report_fields2";
         return jdbcTemplate.query(query,(rs,rownum)->

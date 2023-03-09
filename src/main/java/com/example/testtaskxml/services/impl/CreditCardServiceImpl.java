@@ -23,13 +23,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     private final JdbcTemplate jdbcTemplate;
     public CreditCardServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        {
-            try {
-                System.out.println(encodeZipFile());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     public Document createXmlFile() throws Exception{

@@ -32,7 +32,9 @@ public class CreditCardServiceImpl implements CreditCardService {
         factory.setNamespaceAware(true);
         Document doc = factory.newDocumentBuilder().newDocument();
         Element root = doc.createElement("Records");
-        root.setAttribute("xmlns", "http://www.javacore.ru/schemas/");
+        root.setAttribute("xmlns", "http://www.datapump.cig.com");
+        root.setAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
+        root.setAttribute("xs:schemaLocation", "http://www.datapump.cig.com SRC_Contract_KZ_v5_guar.xsd");
         doc.appendChild(root);
         for (CreditCardDto card:getAllData()){
             Element contract=doc.createElement("Contract");
@@ -80,11 +82,12 @@ public class CreditCardServiceImpl implements CreditCardService {
             ident1.setAttribute("rank","2");
             ident1.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification1()));
             ident1.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent1_date_reg()));
+
             Element ident2=doc.createElement("Identification");
-            ident2.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification2()));
-            ident2.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent2_date_reg()));
             ident2.setAttribute("typeId","7");
             ident2.setAttribute("rank","2");
+            ident2.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification2()));
+            ident2.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent2_date_reg()));
             identifications.appendChild(ident1);
             identifications.appendChild(ident2);
             individual.appendChild(identifications);
@@ -115,7 +118,7 @@ public class CreditCardServiceImpl implements CreditCardService {
             //-Type
             Element type=doc.createElement("Type");
             Element credit=getElementWithAttribute(doc,"Credit","paymentMethod","3");
-            Element creditLimit=getElementWithAttributeAndText(doc,"CreditLimit","currency","KZT","WHAT IS IT?");
+            Element creditLimit=getElementWithAttributeAndText(doc,"CreditLimit","currency","KZT","1000000");
             Element records=doc.createElement("Records");
 
             Element record=getElementWithAttribute(doc,"Record","accountingDate",card.getAccountingDate());

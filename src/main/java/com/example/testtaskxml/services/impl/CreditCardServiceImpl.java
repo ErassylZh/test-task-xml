@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -75,11 +76,15 @@ public class CreditCardServiceImpl implements CreditCardService {
 
             Element identifications=doc.createElement("Identifications");
             Element ident1=doc.createElement("Identification");
+            ident1.setAttribute("typeId","7");
+            ident1.setAttribute("rank","2");
             ident1.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification1()));
             ident1.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent1_date_reg()));
             Element ident2=doc.createElement("Identification");
             ident2.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification2()));
             ident2.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent2_date_reg()));
+            ident2.setAttribute("typeId","7");
+            ident2.setAttribute("rank","2");
             identifications.appendChild(ident1);
             identifications.appendChild(ident2);
             individual.appendChild(identifications);
@@ -124,6 +129,14 @@ public class CreditCardServiceImpl implements CreditCardService {
             contract.appendChild(general);
             contract.appendChild(type);
             root.appendChild(contract);
+
+//            create file for test xml!
+//            File file = new File("test.xml");
+//
+//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//            transformer.transform(new DOMSource(doc), new StreamResult(file));
+//            System.out.println("good");
         }
 
         return doc;

@@ -22,8 +22,18 @@ import java.util.zip.ZipOutputStream;
 public class CreditCardServiceImpl implements CreditCardService {
 
     private final JdbcTemplate jdbcTemplate;
+    private OutputStream outputStream;
+    private InputStream inputStream;
     public CreditCardServiceImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+
+            try {
+                createXmlFile();
+                toZipFile();
+                System.out.println(encodeZipFile());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
     }
 
@@ -31,10 +41,14 @@ public class CreditCardServiceImpl implements CreditCardService {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         Document doc = factory.newDocumentBuilder().newDocument();
+
+        System.out.println("before  "+doc.getChildNodes());
+
         Element root = doc.createElement("Records");
         root.setAttribute("xmlns", "http://www.datapump.cig.com");
         root.setAttribute("xmlns:xs", "http://www.w3.org/2001/XMLSchema-instance");
         root.setAttribute("xs:schemaLocation", "http://www.datapump.cig.com SRC_Contract_KZ_v5_guar.xsd");
+
         doc.appendChild(root);
         for (CreditCardDto card:getAllData()){
             Element contract=doc.createElement("Contract");
@@ -63,14 +77,14 @@ public class CreditCardServiceImpl implements CreditCardService {
             Element firstName=doc.createElement("FirstName");
             firstName.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getFirstname()));
 
-            Element surName=doc.createElement("SurName");
-            surName.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getSurname()));
+            Element surname=doc.createElement("Surname");
+            surname.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getSurname()));
 
             Element fathersName=doc.createElement("FathersName");
             fathersName.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getFathersname()));
 
             individual.appendChild(firstName);
-            individual.appendChild(surName);
+            individual.appendChild(surname);
             individual.appendChild(fathersName);
             individual.appendChild(getElementWithAttribute(doc,"Classification","id","1"));
             individual.appendChild(getElementWithAttribute(doc,"Residency","id",card.getResident()));
@@ -94,6 +108,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 
             Element addresses=doc.createElement("Addresses");
             Element address1=doc.createElement("Address");
+            address1.setAttribute("typeId","1");
             address1.setAttribute("katoId",card.getKatoid1());
             Element streetName1=doc.createElement("StreetName");
             streetName1.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getStreetName1()));
@@ -101,7 +116,8 @@ public class CreditCardServiceImpl implements CreditCardService {
 
 
             Element address2=doc.createElement("Address");
-            address1.setAttribute("katoId",card.getKatoid2());
+            address2.setAttribute("typeId","1");
+            address2.setAttribute("katoId",card.getKatoid2());
             Element streetName2=doc.createElement("StreetName");
             streetName2.appendChild(getElementWithAttributeAndText(doc,"Text","language","ru-RU",card.getStreetName2()));
             address2.appendChild(streetName2);
@@ -117,31 +133,34 @@ public class CreditCardServiceImpl implements CreditCardService {
 
             //-Type
             Element type=doc.createElement("Type");
-            Element credit=getElementWithAttribute(doc,"Credit","paymentMethod","3");
-            Element creditLimit=getElementWithAttributeAndText(doc,"CreditLimit","currency","KZT","1000000");
+            Element installment=getElementWithAttribute(doc,"Instalment","paymentPeriodId","2");
+            Element totalAmount=getElementWithAttributeAndText(doc,"TotalAmount","currency","KZT",card.getTotalAmount());
+            Element installmentAmount=getElementWithAttributeAndText(doc,"InstalmentAmount","currency","KZT",card.getInstalmentAmount());
             Element records=doc.createElement("Records");
 
             Element record=getElementWithAttribute(doc,"Record","accountingDate",card.getAccountingDate());
-            record.appendChild(getElementWithAttributeAndText(doc,"MonthlyInstalmentAmount","currency","KZT",card.getInstalmentAmount()));
-            record.appendChild(getElementWithAttributeAndText(doc,"ResidualAmount","currency","KZT","0"));
+            record.appendChild(getElementWithAttributeAndText(doc,"OutstandingAmount","currency","KZT",card.getOutstanding_amount()));
 
             records.appendChild(record);
-            credit.appendChild(creditLimit);
-            credit.appendChild(records);
-            type.appendChild(credit);
+            installment.appendChild(totalAmount);
+            installment.appendChild(installmentAmount);
+            installment.appendChild(records);
+
+            type.appendChild(installment);
             contract.appendChild(general);
             contract.appendChild(type);
             root.appendChild(contract);
 
 //            create file for test xml!
-//            File file = new File("test.xml");
 //
-//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//            transformer.transform(new DOMSource(doc), new StreamResult(file));
-//            System.out.println("good");
         }
+//
 
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.transform(new DOMSource(doc), new StreamResult(F));
+        System.out.println("good");
+        System.out.println("after "+doc);
         return doc;
     }
 
@@ -161,7 +180,25 @@ public class CreditCardServiceImpl implements CreditCardService {
         res.setTextContent(contentText);
         return res;
     }
-
+    public void toZipFile(){
+        try
+                (
+                ZipOutputStream out = new ZipOutputStream(new FileOutputStream("D:\\codes\\Java codes\\TestTaskXML\\src\\main\\resources\\XMLData\\output.zip"));
+                FileInputStream fis= new FileInputStream("D:\\codes\\Java codes\\TestTaskXML\\src\\main\\resources\\XMLData\\test.xml");
+        )
+        {
+            ZipEntry entry=new ZipEntry("text.xml");
+            out.putNextEntry(entry);
+            byte[] buffer = new byte[fis.available()];
+            fis.read(buffer);
+            out.write(buffer);
+            out.closeEntry();
+            System.out.println("ZIP FILE CREATED!!!");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public ByteArrayOutputStream xmlToZipFile(){
         try {
             // Create a new Document object

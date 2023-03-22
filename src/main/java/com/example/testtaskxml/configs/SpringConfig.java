@@ -5,9 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
-import java.sql.DriverManager;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 @Configuration
 public class SpringConfig {
@@ -31,7 +34,21 @@ public class SpringConfig {
     }
 
     @Bean
+    public RestTemplate restTemplate(){
+        return new RestTemplate();
+    }
+    @Bean
     public JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
+    }
+
+
+    @Bean
+    public Marshaller marshaller() throws JAXBException {
+        JAXBContext context = JAXBContext.newInstance(SoapEnvelope.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        return marshaller;
     }
 }

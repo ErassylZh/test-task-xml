@@ -1,13 +1,13 @@
 package com.example.testtaskxml.services.impl;
 
-import com.example.testtaskxml.DTO.CreditCardDto;
+import com.example.testtaskxml.DTO.*;
 import com.example.testtaskxml.services.CreditCardService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -19,23 +19,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Service
+@RequiredArgsConstructor
 public class CreditCardServiceImpl implements CreditCardService {
 
     private final JdbcTemplate jdbcTemplate;
-    private OutputStream outputStream;
-    private InputStream inputStream;
-    public CreditCardServiceImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-
-            try {
-                createXmlFile();
-                toZipFile();
-                System.out.println(encodeZipFile());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-    }
 
     public Document createXmlFile() throws Exception{
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -94,13 +81,13 @@ public class CreditCardServiceImpl implements CreditCardService {
             Element ident1=doc.createElement("Identification");
             ident1.setAttribute("typeId","7");
             ident1.setAttribute("rank","2");
-            ident1.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification1()));
+            ident1.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification1().substring(0,9)));
             ident1.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent1_date_reg()));
 
             Element ident2=doc.createElement("Identification");
             ident2.setAttribute("typeId","7");
             ident2.setAttribute("rank","2");
-            ident2.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification2()));
+            ident2.appendChild(getElementWithTextContext(doc,"Number",card.getIdentification2().substring(0,9)));
             ident2.appendChild(getElementWithTextContext(doc,"RegistrationDate",card.getIdent2_date_reg()));
             identifications.appendChild(ident1);
             identifications.appendChild(ident2);
@@ -154,13 +141,13 @@ public class CreditCardServiceImpl implements CreditCardService {
 //            create file for test xml!
 //
         }
+//        create file for test xml!
+//            File file = new File("test.xml");
 //
-
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.transform(new DOMSource(doc), new StreamResult(F));
-        System.out.println("good");
-        System.out.println("after "+doc);
+//            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//            transformer.transform(new DOMSource(doc), new StreamResult(file));
+//            System.out.println("good");
         return doc;
     }
 
@@ -180,25 +167,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         res.setTextContent(contentText);
         return res;
     }
-    public void toZipFile(){
-        try
-                (
-                ZipOutputStream out = new ZipOutputStream(new FileOutputStream("D:\\codes\\Java codes\\TestTaskXML\\src\\main\\resources\\XMLData\\output.zip"));
-                FileInputStream fis= new FileInputStream("D:\\codes\\Java codes\\TestTaskXML\\src\\main\\resources\\XMLData\\test.xml");
-        )
-        {
-            ZipEntry entry=new ZipEntry("text.xml");
-            out.putNextEntry(entry);
-            byte[] buffer = new byte[fis.available()];
-            fis.read(buffer);
-            out.write(buffer);
-            out.closeEntry();
-            System.out.println("ZIP FILE CREATED!!!");
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+
     public ByteArrayOutputStream xmlToZipFile(){
         try {
             // Create a new Document object
@@ -282,4 +251,7 @@ public class CreditCardServiceImpl implements CreditCardService {
                     )
                 );
     }
+
+
+
 }
